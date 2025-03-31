@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Who did you think i was",
-      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/cc0000/ffffff",
       "genre": ["Pop", "Rock", "Alternative"],
       "year": 2007,
       "duration": 424,
@@ -13,7 +13,7 @@
     {
       "id": 2,
       "title": "Penny Lane",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "poster": "http://dummyimage.com/600x400.png/dddddd/000000",
       "genre": ["Rock", "Pop", "Chill"],
       "year": 1967,
       "duration": 303,
@@ -23,7 +23,7 @@
     {
       "id": 3,
       "title": "Hey Jude",
-      "poster": "http://dummyimage.com/400x600.png/5fa2dd/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/5fa2dd/ffffff",
       "genre": ["Pop", "Rock", "Alternative"],
       "year": 1974,
       "duration": 206,
@@ -33,7 +33,7 @@
     {
       "id": 4,
       "title": "(I Can't Get No) Satisfaction",
-      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/cc0000/ffffff",
       "genre": ["Rock", "Pop", "Heavy"],
       "year": 1965,
       "duration": 290,
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "title": "Where the Streets Have No Name",
-      "poster": "http://dummyimage.com/400x600.png/ff4444/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/ff4444/ffffff",
       "genre": ["Rock", "Pop", "Heavy"],
       "year": 1982,
       "duration": 217,
@@ -53,7 +53,7 @@
     {
       "id": 6,
       "title": "Who Says",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "poster": "http://dummyimage.com/600x400.png/dddddd/000000",
       "genre": ["Pop", "Romance"],
       "year": 1995,
       "duration": 340,
@@ -63,7 +63,7 @@
     {
       "id": 7,
       "title": "With or without you",
-      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/cc0000/ffffff",
       "genre": ["Rock", "Pop", "Alternative", "Blues"],
       "year": 1972,
       "duration": 305,
@@ -73,7 +73,7 @@
     {
       "id": 8,
       "title": "Start Me Up",
-      "poster": "http://dummyimage.com/400x600.png/ff4444/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/ff4444/ffffff",
       "genre": ["Rock", "Blues", "Heavy"],
       "year": 1973,
       "duration": 217,
@@ -83,7 +83,7 @@
     {
       "id": 9,
       "title": "1979",
-      "poster": "http://dummyimage.com/400x600.png/5fa2dd/ffffff",
+      "poster": "http://dummyimage.com/600x400.png/5fa2dd/ffffff",
       "genre": ["Alternative", "Psychedelic rock", "Rock"],
       "year": 1997,
       "duration": 399,
@@ -93,7 +93,7 @@
     {
       "id": 10,
       "title": "Voodoo Child",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "poster": "http://dummyimage.com/600x400.png/dddddd/000000",
       "genre": ["Blues", "Psychedelic rock", "Rock"],
       "year": 1960,
       "duration": 503,
@@ -103,7 +103,7 @@
     {
       "id": 11,
       "title": "Hey Joe",
-      "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
+      "poster": "http://dummyimage.com/600x400.png/dddddd/000000",
       "genre": ["Blues", "Psychedelic rock", "Rock"],
       "year": 1962,
       "duration": 502,
