@@ -1,4 +1,5 @@
 {
-    "TITLE": "Bienvenido",
-    "DESCRIPTION": "Esta es una aplicación Angular multilingüe."
-  }
+  "TITLE": "Bienvenido",
+  "DESCRIPTION": "Esta es una aplicación Angular multilingüe.",
+  "SONGS": "Canciones"
+}
