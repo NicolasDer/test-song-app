@@ -1,5 +1,9 @@
 {
   "TITLE": "Bienvenido",
   "DESCRIPTION": "Esta es una aplicación Angular multilingüe.",
-  "SONGS": "Canciones"
+  "SONGS": "Canciones",
+  "COMING.SOON": "Proximamente...",
+  "SINGERS": "Artistas",
+  "RECORD.COMPANIES":"Compañías discográgicas",
+  "MENU":"Menú"
 }
