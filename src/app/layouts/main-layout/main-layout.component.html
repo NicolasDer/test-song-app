@@ -30,7 +30,7 @@
       <h1 class="page-title">{{ pageTitle() | translate }}</h1>
     </header>
     <div class="main-content">
-      <ng-content></ng-content>
+      <router-outlet></router-outlet>
     </div>
   </div>
   <div class="overlay" *ngIf="isOpen()" (click)="toggleMenu()"></div>

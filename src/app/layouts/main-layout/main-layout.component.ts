@@ -4,13 +4,13 @@ import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-main-layout',
   standalone: true,
   imports: [CommonModule, RouterModule, TranslateModule],
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  templateUrl: './main-layout.component.html',
+  styleUrls: ['./main-layout.component.scss'],
 })
-export class LayoutComponent {
+export class MainLayoutComponent {
   isOpen = signal(false);
   pageTitle = signal('');
 
