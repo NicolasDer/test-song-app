@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { LayoutComponent } from './shared/menu/layout.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule],
+  imports: [RouterModule, LayoutComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

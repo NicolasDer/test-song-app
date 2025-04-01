@@ -1,0 +1,187 @@
+:host {
+  --menu-width: 250px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--bg-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 4rem;
+  min-height: 4rem;
+  padding-left: 1.5rem;
+}
+
+.main-content {
+  padding-top: 4rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  height: 100vh;
+  background-color: var(--secondary-color);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  width: var(--menu-width, 250px);
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.menu-header > *:only-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.menu-header h2 {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  margin-left: 1rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.menu-button span {
+  display: block;
+  padding: 0.3rem;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-button span {
+  display: block;
+}
+
+.menu-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.sidebar li {
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background 0.3s;
+  border-radius: 8px;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.sidebar li span {
+  margin: 1rem;
+  display: inline-block;
+}
+
+.sidebar li i {
+  margin: 0.8rem;
+  font-size: 1.8rem;
+  display: inline-block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    left: 0;
+    width: min-content;
+    overflow: hidden;
+    position: relative;
+
+    &.open {
+      width: var(--menu-width, 250px);
+
+      h2 {
+        display: inline-block;
+      }
+    }
+  }
+  .overlay {
+    display: none;
+  }
+  .layout {
+    display: flex;
+    height: 100vh;
+  }
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .header {
+    position: relative;
+  }
+  .menu-button {
+    display: none;
+  }
+  .main-content {
+    padding-top: 0;
+    overflow-y: auto;
+  }
+}
