@@ -2,17 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-export interface Song {
-  id: number;
-  title: string;
-  poster: string;
-  genre: string[];
-  year: number;
-  duration: number;
-  rating: number;
-  artist: number;
-}
+import { Song } from '../models/song.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +17,7 @@ export class SongService {
   }
 
   getSongById(id: number): Observable<Song> {
-    return this.http.get<Song>(`${this.apiUrl}/${id}`);
+    return this.http.get<Song>(`${this.apiUrl}/${id}?_expand=artist&_expand=company`);
   }
 
   addSong(song: Song): Observable<Song> {

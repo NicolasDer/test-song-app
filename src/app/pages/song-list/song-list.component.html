@@ -1,11 +1,7 @@
 <section class="container">
   <div class="song-list">
-    <div *ngFor="let song of songs" class="card" (click)="goToDetail(song.id)">
-      <h2>{{ song.title }}</h2>
-      <img [src]="song.poster" [alt]="song.title" class="album-cover" />
-      <div class="genres">
-        <span *ngFor="let g of song.genre"># {{ g }}</span>
-      </div>
-    </div>
+    <app-song-card *ngFor="let song of songs$ | async | keyvalue" 
+    [song]="song.value"
+    [artist]="(artists$ | async)?.[song.value.artist]"></app-song-card>
   </div>
 </section>

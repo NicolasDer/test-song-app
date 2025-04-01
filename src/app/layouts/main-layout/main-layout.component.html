@@ -1,7 +1,7 @@
 <div class="layout">
   <nav [class.open]="isOpen()" class="sidebar">
     <div class="menu-header">
-      <h2 *ngIf="isOpen()">{{ "MENU" | translate }}</h2>
+      <h2 *ngIf="isOpen()">{{ title$ | async }}</h2>
       <button *ngIf="!isOpen()" class="hamburger-button" (click)="toggleMenu()">
         <span>☰</span>
       </button>

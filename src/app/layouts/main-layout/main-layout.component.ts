@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { selectTitle } from '../../store/selectors/title.selector';
   imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent {
   isOpen = signal(false);

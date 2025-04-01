@@ -1,0 +1,7 @@
+<div *ngIf="song" class="card" (click)="goToDetail(song.id)">
+  <h2>{{ song.title + " (" + artist?.name + ")" }}</h2>
+  <img [src]="song.poster" [alt]="song.title" class="album-cover" />
+  <div class="genres">
+    <span *ngFor="let g of song.genre"># {{ g }}</span>
+  </div>
+</div>
