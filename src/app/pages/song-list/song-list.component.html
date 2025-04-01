@@ -1,6 +1,6 @@
 <section class="container">
   <div class="song-list">
-    <div *ngFor="let song of songs" class="card">
+    <div *ngFor="let song of songs" class="card" (click)="goToDetail(song.id)">
       <h2>{{ song.title }}</h2>
       <img [src]="song.poster" [alt]="song.title" class="album-cover" />
       <div class="genres">

@@ -29,6 +29,18 @@ export const routes: Routes = [
     ],
   },
   {
+    path: '',
+    loadComponent: () => import('./layouts/detail-layout/detail-layout.component')
+      .then(m => m.DetailLayoutComponent),
+    children: [
+      {
+        path: 'songs/:id',
+        loadComponent: () => import('./pages/song-detail/song-detail.component')
+          .then(m => m.SongDetailComponent),
+      },
+    ],
+  },
+  {
     path: '**',
     redirectTo: 'songs',
   }

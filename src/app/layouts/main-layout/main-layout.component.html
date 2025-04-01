@@ -27,7 +27,7 @@
       <button class="menu-button" (click)="toggleMenu()">
         <span>☰</span>
       </button>
-      <h1 class="page-title">{{ pageTitle() | translate }}</h1>
+      <h1 class="page-title">{{ title$ | async }}</h1>
     </header>
     <div class="main-content">
       <router-outlet></router-outlet>
