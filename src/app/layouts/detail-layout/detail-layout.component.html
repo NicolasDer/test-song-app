@@ -1,0 +1,9 @@
+<div class="detail-layout">
+  <header class="header">
+    <i class="fa-solid fa-arrow-left" (click)="goBack()"></i>
+    <h1 class="page-title">{{ title$ | async }}</h1>
+  </header>
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-export interface Artist {
-  id: number;
-  name: string;
-  genre: string;
-}
+import { Artist } from '../models/artist.model';
 
 @Injectable({
   providedIn: 'root'

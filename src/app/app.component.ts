@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { LayoutComponent } from './shared/menu/layout.component';
+import { loadArtists, loadCompanies, loadSongs } from './store/actions/song.actions';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, LayoutComponent],
+  imports: [RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService,private store: Store) {
     this.translate.setDefaultLang('es');
-    this.translate.use('es');   
+    this.translate.use('es');
+  }
+
+  ngOnInit(){
+    this.store.dispatch(loadSongs());
+    this.store.dispatch(loadArtists());
+    this.store.dispatch(loadCompanies());
   }
 
   changeLanguage(event: Event) {

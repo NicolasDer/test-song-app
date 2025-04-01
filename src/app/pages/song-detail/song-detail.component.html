@@ -1,0 +1,48 @@
+<div class="song-detail-container" *ngIf="songDetails$ | async as data">
+  <app-song-card [song]="data.song" [artist]="data.artist"></app-song-card>
+  <div class="form-container">
+    <div class="pill-container">
+      <h2 [style.color]="'--text-color'">Géneros</h2>
+      <div class="pills">
+        <span *ngFor="let g of data.song?.genre"># {{ g }}</span>
+      </div>
+    </div>
+    <div class="pill-container">
+      <h2 [style.color]="'--text-color'">Compañía Discográfica</h2>
+      <div class="pills" *ngFor="let company of data.companies">
+        <span
+          [style.background]="'--accent-color'"
+          [style.color]="'--bg-color'"
+          >{{ company?.name }}</span
+        >
+      </div>
+    </div>
+    <div class="info-row">
+      <h3 [style.color]="'--text-color'">País</h3>
+      <input
+        type="text"
+        [value]="data.artist?.bornCity"
+        class="underlined-input"
+        readonly
+      />
+    </div>
+    <div class="info-row">
+      <h3 [style.color]="'--text-color'">Año</h3>
+      <input
+        type="text"
+        [value]="data.song?.year"
+        class="underlined-input"
+        readonly
+      />
+    </div>
+    <div class="info-row">
+      <h3 [style.color]="'--text-color'">Puntuación</h3>
+      <input
+        type="text"
+        [value]="data.song?.rating"
+        class="underlined-input"
+        readonly
+      />
+    </div>
+  </div>
+</div>
