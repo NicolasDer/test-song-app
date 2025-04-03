@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Song } from '../models/song.model';
+import { SongForm } from '../models/song-form.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,17 @@ export class SongService {
     return this.http.get<Song>(`${this.apiUrl}/${id}?_expand=artist&_expand=company`);
   }
 
-  addSong(song: Song): Observable<Song> {
-    return this.http.post<Song>(this.apiUrl, song);
+  addSong(song: SongForm): Observable<Song> {
+    const { id, companies, ...dataToSend} = song;
+    return this.http.post<Song>(this.apiUrl, dataToSend);
   }
 
-  updateSong(song: Song): Observable<Song> {
-    return this.http.put<Song>(`${this.apiUrl}/${song.id}`, song);
+  updateSong(song: SongForm): Observable<Song> {
+    const { companies, ...dataToSend} = song;
+    return this.http.put<Song>(`${this.apiUrl}/${song.id}`, dataToSend);
   }
 
-  deleteSong(id: number): Observable<void> {
+  deleteSong(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

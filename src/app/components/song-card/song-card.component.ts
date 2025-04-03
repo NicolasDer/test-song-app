@@ -15,7 +15,9 @@ export class SongCardComponent {
   @Input() artist: Artist | undefined;
   constructor(private router: Router) {}
 
-  goToDetail(songId: number) {
-    this.router.navigate(['/songs', songId]);
+  goToDetail(songId: string | undefined) {
+    if(songId){
+      this.router.navigate(['/songs', songId]);
+    }
   }
 }

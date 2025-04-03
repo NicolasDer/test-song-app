@@ -3,9 +3,9 @@ import { Company } from "../../models/company.model";
 import { Song } from "../../models/song.model";
 
 export interface AppState {
-    songs: { [id: number]: Song };
-    artists: { [id: number]: Artist };
-    companies: { [id: number]: Company };
+    songs: { [id: string]: Song };
+    artists: { [id: string]: Artist };
+    companies: { [id: string]: Company };
     songsLoaded: boolean;
     artistsLoaded: boolean;
     companiesLoaded: boolean;
