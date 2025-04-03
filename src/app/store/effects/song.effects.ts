@@ -64,7 +64,8 @@ export class SongEffects {
     private router: Router,
     private toastr: ToastrService
   ) {
-    this.delay = environment.apiDelay ? environment.apiDelay : 0;
+    const minDelay = 1500;
+    this.delay = (environment.apiDelay ? environment.apiDelay : 0) + minDelay;
   }
   delay: number;
 
@@ -98,6 +99,7 @@ export class SongEffects {
       ofType(createSong),
       mergeMap((action) =>
         this.songService.addSong(action.song).pipe(
+          delay(this.delay),
           switchMap((savedSong) => this.updateCompanies(savedSong, action)),
           catchError((error) => {
             this.toastr.error('Hubo un error', 'No se pudo crear la canción');
@@ -155,6 +157,7 @@ export class SongEffects {
       ofType(saveSong),
       mergeMap((action) =>
         this.songService.updateSong(action.song).pipe(
+          delay(this.delay),
           switchMap((savedSong) => {
             const companies = action.song.companies;
 
@@ -247,6 +250,7 @@ export class SongEffects {
       ofType(deleteSong),
       mergeMap((action) =>
         this.songService.deleteSong(action.songId).pipe(
+          delay(this.delay),
           switchMap(() => {
             return this.store
               .select(selectCompaniesForSong(action.songId))

@@ -55,3 +55,8 @@ export const selectLoadingState = createSelector(
   selectSongsState,
   (state: AppState) => state.loading
 )
+
+export const selectSavingState = createSelector(
+  selectSongsState,
+  (state: AppState) => state.saving
+)

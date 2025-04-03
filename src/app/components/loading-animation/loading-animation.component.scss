@@ -1,0 +1,82 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.322); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.opaque {
+  background-color: rgb(82, 82, 82);
+  animation: vanish 0.5s 1.5s forwards;
+}
+
+svg {
+  width: 100%;
+  max-width: 250px;
+  padding: 30px;
+}
+
+path {
+  fill: #66ffcc;
+  opacity: 0;
+  animation-timing-function: ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+#path1 {
+  animation: blink1 3s infinite;
+}
+
+#path2 {
+  animation: blink2 3s infinite;
+}
+
+#path3 {
+  animation: blink3 3s infinite;
+}
+
+@keyframes vanish {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink1 {
+  0%,
+  95% {
+    opacity: 0;
+  }
+  25%,
+  55% {
+    opacity: 1;
+  }
+}
+@keyframes blink2 {
+  20%,
+  95% {
+    opacity: 0;
+  }
+  45%,
+  70% {
+    opacity: 1;
+  }
+}
+@keyframes blink3 {
+  35%,
+  95% {
+    opacity: 0;
+  }
+  60%,
+  76% {
+    opacity: 1;
+  }
+}

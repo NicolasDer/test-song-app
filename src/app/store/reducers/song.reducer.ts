@@ -35,6 +35,7 @@ export const initialState: AppState = {
   artistsLoaded: false,
   companiesLoaded: false,
   loading: false,
+  saving: false,
 };
 
 export const appReducer = createReducer(
@@ -54,7 +55,7 @@ export const appReducer = createReducer(
   })),
   on(createSong, (state) => ({
     ...state,
-    loading: true,
+    saving: true,
   })),
   on(createSongSuccess, (state, { song }) => ({
     ...state,
@@ -62,15 +63,15 @@ export const appReducer = createReducer(
       ...state.songs,
       [song?.id || '0']: song,
     },
-    loading: false,
+    saving: false,
   })),
   on(createSongFailure, (state) => ({
     ...state,
-    loading: false,
+    saving: false,
   })),
   on(saveSong, (state) => ({
     ...state,
-    loading: true,
+    saving: true,
   })),
   on(saveSongSuccess, (state, { song }) => ({
     ...state,
@@ -78,15 +79,15 @@ export const appReducer = createReducer(
       ...state.songs,
       [song?.id || '0']: song,
     },
-    loading: false,
+    saving: false,
   })),
   on(saveSongFailure, (state) => ({
     ...state,
-    loading: false,
+    saving: false,
   })),
   on(deleteSong, (state) => ({
     ...state,
-    loading: true,
+    saving: true,
   })),
   on(deleteSongSuccess, (state, { songId }) => {
     const newState = {
@@ -94,14 +95,14 @@ export const appReducer = createReducer(
       songs: {
         ...state.songs,
       },
-      loading: false,
+      saving: false,
     };
     delete newState.songs[songId];
     return newState;
   }),
   on(deleteSongFailure, (state) => ({
     ...state,
-    loading: false,
+    saving: false,
   })),
   on(loadArtists, (state) => ({
     ...state,
