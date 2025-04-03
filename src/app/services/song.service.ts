@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Song } from '../models/song.model';
 import { SongForm } from '../models/song-form.model';
@@ -23,15 +23,24 @@ export class SongService {
 
   addSong(song: SongForm): Observable<Song> {
     const { id, companies, ...dataToSend} = song;
+    if (environment.apiErrors) {
+      return throwError(() => new Error('Simulación de error debido a la configuración.'));
+    }
     return this.http.post<Song>(this.apiUrl, dataToSend);
   }
 
   updateSong(song: SongForm): Observable<Song> {
     const { companies, ...dataToSend} = song;
+    if (environment.apiErrors) {
+      return throwError(() => new Error('Simulación de error debido a la configuración.'));
+    }
     return this.http.put<Song>(`${this.apiUrl}/${song.id}`, dataToSend);
   }
 
   deleteSong(id: string): Observable<void> {
+    if (environment.apiErrors) {
+      return throwError(() => new Error('Simulación de error debido a la configuración.'));
+    }
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

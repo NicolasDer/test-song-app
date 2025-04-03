@@ -50,6 +50,8 @@ import { CompanyService } from '../../services/company.service';
 import { Router } from '@angular/router';
 import { Company } from '../../models/company.model';
 import { Song } from '../../models/song.model';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class SongEffects {
@@ -59,8 +61,12 @@ export class SongEffects {
     private artistService: ArtistService,
     private companyService: CompanyService,
     private store: Store,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    this.delay = environment.apiDelay ? environment.apiDelay : 0;
+  }
+  delay: number;
 
   loadSongs$ = createEffect(() =>
     this.actions$.pipe(
@@ -74,7 +80,7 @@ export class SongEffects {
           return of();
         } else {
           return this.songService.getSongs().pipe(
-            delay(2000),
+            delay(this.delay),
             map((songs) => {
               return loadSongsSuccess({ songs });
             }),
@@ -91,11 +97,14 @@ export class SongEffects {
     this.actions$.pipe(
       ofType(createSong),
       mergeMap((action) =>
-        this.songService
-          .addSong(action.song)
-          .pipe(map((savedSong) => this.updateCompanies(savedSong, action)))
-      ),
-      mergeMap((actions) => actions)
+        this.songService.addSong(action.song).pipe(
+          switchMap((savedSong) => this.updateCompanies(savedSong, action)),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+            return of(saveSongFailure({ error }));
+          })
+        )
+      )
     )
   );
 
@@ -119,10 +128,12 @@ export class SongEffects {
         const companyActions = updatedCompanies.map((company) =>
           saveCompany({ company })
         );
-
         return [createSongSuccess({ song: savedSong }), ...companyActions];
       }),
-      catchError((error) => of(createSongFailure({ error })))
+      catchError((error) => {
+        this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+        return of(createSongFailure({ error }));
+      })
     );
   }
 
@@ -132,6 +143,7 @@ export class SongEffects {
         ofType(createSongSuccess),
         map(() => {
           this.router.navigate(['/']);
+          this.toastr.success('¡Éxito!', 'Canción creada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -143,7 +155,7 @@ export class SongEffects {
       ofType(saveSong),
       mergeMap((action) =>
         this.songService.updateSong(action.song).pipe(
-          map((savedSong) => {
+          switchMap((savedSong) => {
             const companies = action.song.companies;
 
             return this.store.select(selectCompaniesByIds(companies)).pipe(
@@ -188,15 +200,17 @@ export class SongEffects {
                         saveSongSuccess({ song: savedSong }),
                         ...companyActions,
                       ];
-                    }),
-                    catchError((error) => of(saveSongFailure({ error })))
+                    })
                   );
               })
             );
+          }),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo guardar la canción');
+            return of(saveSongFailure({ error }));
           })
         )
-      ),
-      mergeMap((actions) => actions)
+      )
     )
   );
 
@@ -221,6 +235,7 @@ export class SongEffects {
         ofType(saveSongSuccess),
         map((action) => {
           this.router.navigate(['/songs', action.song.id]);
+          this.toastr.success('¡Éxito!', 'Canción guardada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -252,9 +267,12 @@ export class SongEffects {
                     deleteSongSuccess({ songId: action.songId }),
                     ...companyActions,
                   ];
-                }),
-                catchError((error) => of(deleteSongFailure({ error })))
+                })
               );
+          }),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo borrar la canción');
+            return of(deleteSongFailure({ error }));
           })
         )
       )
@@ -267,6 +285,7 @@ export class SongEffects {
         ofType(deleteSongSuccess),
         map((action) => {
           this.router.navigate(['/']);
+          this.toastr.success('¡Éxito!', 'Canción borrada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -285,7 +304,7 @@ export class SongEffects {
           return of();
         } else {
           return this.artistService.getArtists().pipe(
-            delay(2000),
+            delay(this.delay),
             map((artists) => {
               return loadArtistsSuccess({ artists });
             }),
@@ -310,7 +329,7 @@ export class SongEffects {
           return of();
         } else {
           return this.companyService.getCompanies().pipe(
-            delay(2000),
+            delay(this.delay),
             map((companies) => {
               return loadCompaniesSuccess({ companies });
             }),

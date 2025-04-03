@@ -204,13 +204,11 @@ export class SongFormComponent {
       const song: SongForm = this.form.value;
       song.poster = this.poster;
       if (this.isEditMode) {
-        console.log(song);
         this.store.dispatch(saveSong({ song }));
       } else {
         this.store.dispatch(createSong({ song }));
       }
     } else {
-      console.log(this.form.get('rating')?.invalid);
       Object.keys(this.form.controls).forEach((field) => {
         const control = this.form.get(field);
         control?.markAsTouched();
