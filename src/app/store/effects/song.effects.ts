@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
+  delay,
   map,
   mergeMap,
   switchMap,
@@ -16,10 +17,7 @@ import {
   loadArtistsSuccess,
   loadCompanies,
   loadCompaniesSuccess,
-  setSongsLoaded,
-  setArtistsLoaded,
   loadArtistsFailure,
-  setCompaniesLoaded,
   loadCompaniesFailure,
   saveSong,
   saveSongSuccess,
@@ -76,8 +74,8 @@ export class SongEffects {
           return of();
         } else {
           return this.songService.getSongs().pipe(
+            delay(2000),
             map((songs) => {
-              this.store.dispatch(setSongsLoaded({ loaded: true }));
               return loadSongsSuccess({ songs });
             }),
             catchError((error) => {
@@ -287,8 +285,8 @@ export class SongEffects {
           return of();
         } else {
           return this.artistService.getArtists().pipe(
+            delay(2000),
             map((artists) => {
-              this.store.dispatch(setArtistsLoaded({ loaded: true }));
               return loadArtistsSuccess({ artists });
             }),
             catchError((error) => {
@@ -312,8 +310,8 @@ export class SongEffects {
           return of();
         } else {
           return this.companyService.getCompanies().pipe(
+            delay(2000),
             map((companies) => {
-              this.store.dispatch(setCompaniesLoaded({ loaded: true }));
               return loadCompaniesSuccess({ companies });
             }),
             catchError((error) => {

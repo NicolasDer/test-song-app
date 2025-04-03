@@ -50,3 +50,8 @@ export const selectCompaniesLoaded = createSelector(
   selectSongsState,
   (state: AppState) => state.companiesLoaded
 );
+
+export const selectLoadingState = createSelector(
+  selectSongsState,
+  (state: AppState) => state.loading
+)

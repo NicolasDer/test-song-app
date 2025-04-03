@@ -9,4 +9,5 @@ export interface AppState {
     songsLoaded: boolean;
     artistsLoaded: boolean;
     companiesLoaded: boolean;
+    loading: boolean;
 }

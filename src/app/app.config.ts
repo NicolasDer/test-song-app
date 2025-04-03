@@ -14,6 +14,7 @@ import { titleReducer } from './store/reducers/title.reducer';
 import { appReducer } from './store/reducers/song.reducer';
 import { provideEffects } from '@ngrx/effects';
 import { SongEffects } from './store/effects/song.effects';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -30,6 +31,13 @@ export const appConfig: ApplicationConfig = {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,
           deps: [HttpClient],
+        },
+      }),
+      NgxSkeletonLoaderModule.forRoot({
+        animation: 'progress-dark',
+        theme: {
+          extendsFromRoot: true,
+          'background': '#2F3855'
         },
       })
     ),

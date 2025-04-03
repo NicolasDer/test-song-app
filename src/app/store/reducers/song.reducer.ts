@@ -10,6 +10,17 @@ import {
   createSongSuccess,
   saveCompanySuccess,
   deleteSongSuccess,
+  saveCompanyFailure,
+  createSongFailure,
+  saveSongFailure,
+  deleteSongFailure,
+  saveSong,
+  loadSongs,
+  createSong,
+  deleteSong,
+  loadArtists,
+  loadCompanies,
+  saveCompany,
 } from '../actions/song.actions';
 import { AppState } from '../state/song.state';
 import { Song } from '../../models/song.model';
@@ -23,16 +34,27 @@ export const initialState: AppState = {
   songsLoaded: false,
   artistsLoaded: false,
   companiesLoaded: false,
+  loading: false,
 };
 
 export const appReducer = createReducer(
-  initialState,
+  initialState,  
+  on( loadSongs, (state) => ({
+    ...state,
+    loading:true,
+  })),
   on(loadSongsSuccess, (state, { songs }) => ({
     ...state,
     songs: songs.reduce((acc, song) => {
       acc[song?.id || '0'] = song;
       return acc;
     }, {} as { [id: string]: Song }),
+    loading: false,
+    songsLoaded: true,
+  })), 
+  on( createSong, (state) => ({
+    ...state,
+    loading:true,
   })),
   on(createSongSuccess, (state, { song }) => ({
     ...state,
@@ -40,6 +62,15 @@ export const appReducer = createReducer(
       ...state.songs,
       [song?.id || '0']: song,
     },
+    loading: false,
+  })),
+  on( createSongFailure, (state) => ({
+    ...state,
+    loading:true,
+  })), 
+  on( saveSong, (state) => ({
+    ...state,
+    loading:true,
   })),
   on(saveSongSuccess, (state, { song }) => ({
     ...state,
@@ -47,6 +78,15 @@ export const appReducer = createReducer(
       ...state.songs,
       [song?.id || '0']: song,
     },
+    loading: false,
+  })),
+  on( saveSongFailure, (state) => ({
+    ...state,
+    loading:true,
+  })), 
+  on( deleteSong, (state) => ({
+    ...state,
+    loading:true,
   })),
   on(deleteSongSuccess, (state, { songId }) => {
     const newState = {
@@ -54,16 +94,31 @@ export const appReducer = createReducer(
       songs: {
         ...state.songs,
       },
+      loading: false,
     };
     delete newState.songs[songId];
     return newState;
   }),
+  on( deleteSongFailure, (state) => ({
+    ...state,
+    loading:true,
+  })), 
+  on( loadArtists, (state) => ({
+    ...state,
+    loading:true,
+  })),
   on(loadArtistsSuccess, (state, { artists }) => ({
     ...state,
     artists: artists.reduce((acc, artist) => {
       acc[artist?.id || '0'] = artist;
       return acc;
     }, {} as { [id: string]: Artist }),
+    loading: false,
+    artistsLoaded: true,
+  })), 
+  on( loadCompanies, (state) => ({
+    ...state,
+    loading:true,
   })),
   on(loadCompaniesSuccess, (state, { companies }) => ({
     ...state,
@@ -71,6 +126,12 @@ export const appReducer = createReducer(
       acc[company?.id || '0'] = company;
       return acc;
     }, {} as { [id: string]: Company }),
+    loading: false,
+    companiesLoaded: true,
+  })), 
+  on( saveCompany, (state) => ({
+    ...state,
+    loading:true,
   })),
   on(saveCompanySuccess, (state, { company }) => ({
     ...state,
@@ -78,8 +139,13 @@ export const appReducer = createReducer(
       ...state.companies,
       [company?.id || '0']: company,
     },
+    loading: false,
   })),
-  on(loadSongsFailure, (state) => ({ ...state, songsLoaded: false })),
-  on(loadArtistsFailure, (state) => ({ ...state, artistsLoaded: false })),
-  on(loadCompaniesFailure, (state) => ({ ...state, companiesLoaded: false }))
+  on( saveCompanyFailure, (state) => ({
+    ...state,
+    loading:false,
+  })),
+  on(loadSongsFailure, (state) => ({ ...state, songsLoaded: false, loading: false })),
+  on(loadArtistsFailure, (state) => ({ ...state, artistsLoaded: false, loading: false })),
+  on(loadCompaniesFailure, (state) => ({ ...state, companiesLoaded: false, loading: false }))
 );

@@ -73,6 +73,12 @@ app-song-card {
   z-index: 1000; 
 }
 
+.card-skeleton {
+  margin:auto;    
+  width: 100%;
+  max-width: 600px;
+}
+
 @media (min-width: 1024px) {
   .sticky-bar {
     left: 50%;

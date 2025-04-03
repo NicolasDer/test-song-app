@@ -1,21 +1,59 @@
 <div class="song-detail-container" *ngIf="songDetails$ | async as data">
-  <app-song-card [song]="data.song" [artist]="data.artist"></app-song-card>
+  <app-song-card
+    *ngIf="!(loading$ | async)"
+    [song]="data.song"
+    [artist]="data.artist"
+  ></app-song-card>
+  <ngx-skeleton-loader
+    *ngIf="loading$ | async"
+    class="card-skeleton"
+    [theme]="{
+      'border-radius': '5px',
+      height: '350px',
+      width: '100%'
+    }"
+  ></ngx-skeleton-loader>
   <div class="form-container">
     <div class="pill-container">
       <h2 [style.color]="'--text-color'">Géneros</h2>
-      <div class="pills">
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        class="card-skeleton"
+        [count]="3"
+        [theme]="{
+          'border-radius': '1rem',
+          height: '1.5rem',
+          width: '70px',
+          'margin-bottom': '0',
+          'margin-right': '10px'
+        }"
+      ></ngx-skeleton-loader>
+      <div class="pills" *ngIf="!(loading$ | async)">
         <span *ngFor="let g of data.song?.genre"># {{ g }}</span>
-        <span *ngIf="!data.song?.genre || data.song?.genre?.length == 0" class="missing-pill">
+        <span
+          *ngIf="!data.song?.genre || data.song?.genre?.length == 0"
+          class="missing-pill"
+        >
           {{ "GENRE.UNKNOWN" | translate }}
         </span>
       </div>
     </div>
     <div class="pill-container">
       <h2 [style.color]="'--text-color'">Compañía Discográfica</h2>
-      <div class="pills">
-        <span *ngFor="let company of data.companies"
-          >{{ company?.name }}</span
-        >
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        class="card-skeleton"
+        [count]="3"
+        [theme]="{
+          'border-radius': '1rem',
+          height: '1.5rem',
+          width: '70px',
+          'margin-bottom': '0',
+          'margin-right': '10px'
+        }"
+      ></ngx-skeleton-loader>
+      <div class="pills" *ngIf="!(loading$ | async)">
+        <span *ngFor="let company of data.companies">{{ company?.name }}</span>
         <span *ngIf="data.companies.length == 0" class="missing-pill">
           {{ "COMPANY.UNKNOWN" | translate }}
         </span>
@@ -23,7 +61,14 @@
     </div>
     <div class="info-row">
       <h3 [style.color]="'--text-color'">País</h3>
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        [theme]="{
+          height: '2rem'
+        }"
+      ></ngx-skeleton-loader>
       <input
+        *ngIf="!(loading$ | async)"
         type="text"
         [value]="data.song?.country || ''"
         placeholder="País desconocido"
@@ -33,7 +78,14 @@
     </div>
     <div class="info-row">
       <h3 [style.color]="'--text-color'">Año</h3>
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        [theme]="{
+          height: '2rem'
+        }"
+      ></ngx-skeleton-loader>
       <input
+        *ngIf="!(loading$ | async)"
         type="text"
         [value]="data.song?.year"
         class="underlined-input"
@@ -42,7 +94,14 @@
     </div>
     <div class="info-row">
       <h3 [style.color]="'--text-color'">Puntuación</h3>
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        [theme]="{
+          height: '2rem'
+        }"
+      ></ngx-skeleton-loader>
       <input
+        *ngIf="!(loading$ | async)"
         type="text"
         [value]="data.song?.rating"
         class="underlined-input"
@@ -52,13 +111,17 @@
   </div>
 </div>
 <div class="sticky-bar" *ngIf="songDetails$ | async as data">
-  <app-icon-button 
-    iconClass="fa-solid fa-pen" 
-    (buttonClick)="editSong(data.song?.id)">
+  <app-icon-button
+    *ngIf="!(loading$ | async)"
+    iconClass="fa-solid fa-pen"
+    (buttonClick)="editSong(data.song?.id)"
+  >
   </app-icon-button>
 
-  <app-icon-button 
-    iconClass="fa-solid fa-trash" 
-    (buttonClick)="deleteSong(data.song?.id)">
+  <app-icon-button
+    *ngIf="!(loading$ | async)"
+    iconClass="fa-solid fa-trash"
+    (buttonClick)="deleteSong(data.song?.id)"
+  >
   </app-icon-button>
 </div>
