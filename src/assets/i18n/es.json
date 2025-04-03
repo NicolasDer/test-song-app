@@ -5,5 +5,9 @@
   "COMING.SOON": "Proximamente...",
   "SINGERS": "Artistas",
   "RECORD.COMPANIES":"Compañías discográgicas",
-  "MENU":"Menú"
+  "MENU":"Menú",
+  "NEW.SONG":"Nueva canción",
+  "EDIT.SONG":"Editar canción",
+  "COMPANY.UNKNOWN": "Compañía desconocida",
+  "GENRE.UNKNOWN": "Género desconocido"
 }

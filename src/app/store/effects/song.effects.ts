@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mergeMap,
+  switchMap,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 import {
   loadSongs,
   loadSongsSuccess,
@@ -14,6 +21,18 @@ import {
   loadArtistsFailure,
   setCompaniesLoaded,
   loadCompaniesFailure,
+  saveSong,
+  saveSongSuccess,
+  saveSongFailure,
+  createSong,
+  createSongSuccess,
+  createSongFailure,
+  saveCompany,
+  saveCompanySuccess,
+  saveCompanyFailure,
+  deleteSong,
+  deleteSongSuccess,
+  deleteSongFailure,
 } from '../actions/song.actions';
 import { SongService } from '../../services/song.service';
 import { Store, select } from '@ngrx/store';
@@ -21,6 +40,8 @@ import {
   selectArtists,
   selectArtistsLoaded,
   selectCompanies,
+  selectCompaniesByIds,
+  selectCompaniesForSong,
   selectCompaniesLoaded,
   selectSongs,
   selectSongsLoaded,
@@ -28,6 +49,9 @@ import {
 import { of } from 'rxjs';
 import { ArtistService } from '../../services/artist.service';
 import { CompanyService } from '../../services/company.service';
+import { Router } from '@angular/router';
+import { Company } from '../../models/company.model';
+import { Song } from '../../models/song.model';
 
 @Injectable()
 export class SongEffects {
@@ -36,7 +60,8 @@ export class SongEffects {
     private songService: SongService,
     private artistService: ArtistService,
     private companyService: CompanyService,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   loadSongs$ = createEffect(() =>
@@ -62,6 +87,192 @@ export class SongEffects {
         }
       })
     )
+  );
+
+  createSong$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createSong),
+      mergeMap((action) =>
+        this.songService
+          .addSong(action.song)
+          .pipe(map((savedSong) => this.updateCompanies(savedSong, action)))
+      ),
+      mergeMap((actions) => actions)
+    )
+  );
+
+  private updateCompanies(
+    savedSong: Song,
+    action: ReturnType<typeof createSong>
+  ) {
+    const companies = action.song.companies;
+
+    return this.store.select(selectCompaniesByIds(companies)).pipe(
+      take(1),
+      mergeMap((companiesList) => {
+        const updatedCompanies = companiesList.map(
+          (company) =>
+            ({
+              ...company,
+              songs: [...company.songs, savedSong.id],
+            } as Company)
+        );
+
+        const companyActions = updatedCompanies.map((company) =>
+          saveCompany({ company })
+        );
+
+        return [createSongSuccess({ song: savedSong }), ...companyActions];
+      }),
+      catchError((error) => of(createSongFailure({ error })))
+    );
+  }
+
+  createSongSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createSongSuccess),
+        map(() => {
+          this.router.navigate(['/']);
+          return { type: '[Song] No Action' };
+        })
+      ),
+    { dispatch: false }
+  );
+
+  saveSong$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveSong),
+      mergeMap((action) =>
+        this.songService.updateSong(action.song).pipe(
+          map((savedSong) => {
+            const companies = action.song.companies;
+
+            return this.store.select(selectCompaniesByIds(companies)).pipe(
+              take(1),
+              mergeMap((companiesList) => {
+                return this.store
+                  .select(selectCompaniesForSong(savedSong?.id || '0'))
+                  .pipe(
+                    take(1),
+                    mergeMap((companiesForSongList) => {
+                      const { addedCompanies, deletedCompanies } =
+                        this.getUniqueCompanies(
+                          companiesForSongList,
+                          companiesList
+                        );
+                      console.log(deletedCompanies);
+                      const updatedCompanies = addedCompanies
+                        .map(
+                          (company) =>
+                            ({
+                              ...company,
+                              songs: [...company.songs, savedSong.id],
+                            } as Company)
+                        )
+                        .concat(
+                          ...deletedCompanies.map(
+                            (company) =>
+                              ({
+                                ...company,
+                                songs: company.songs.filter(
+                                  (id) => id !== savedSong.id
+                                ),
+                              } as Company)
+                          )
+                        );
+
+                      const companyActions = updatedCompanies.map((company) =>
+                        saveCompany({ company })
+                      );
+
+                      return [
+                        saveSongSuccess({ song: savedSong }),
+                        ...companyActions,
+                      ];
+                    }),
+                    catchError((error) => of(saveSongFailure({ error })))
+                  );
+              })
+            );
+          })
+        )
+      ),
+      mergeMap((actions) => actions)
+    )
+  );
+
+  getUniqueCompanies(
+    oldCompanies: Company[],
+    newCompanies: Company[]
+  ): { addedCompanies: Company[]; deletedCompanies: Company[] } {
+    const setOldCompanies = new Set(oldCompanies.map((item) => item.id));
+    const setNewCompanies = new Set(newCompanies.map((item) => item.id));
+    const addedCompanies = newCompanies.filter(
+      (c) => !setOldCompanies.has(c.id)
+    );
+    const deletedCompanies = oldCompanies.filter(
+      (c) => !setNewCompanies.has(c.id)
+    );
+    return { addedCompanies, deletedCompanies };
+  }
+
+  saveSongSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(saveSongSuccess),
+        map((action) => {
+          this.router.navigate(['/songs', action.song.id]);
+          return { type: '[Song] No Action' };
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteSong$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteSong),
+      mergeMap((action) =>
+        this.songService.deleteSong(action.songId).pipe(
+          switchMap(() => {
+            return this.store
+              .select(selectCompaniesForSong(action.songId))
+              .pipe(
+                take(1),
+                mergeMap((companies) => {
+                  const updatedCompanies = companies.map((company) => ({
+                    ...company,
+                    songs: company.songs.filter(
+                      (songId) => songId != action.songId
+                    ),
+                  }));
+                  const companyActions = updatedCompanies.map((company) =>
+                    saveCompany({ company })
+                  );
+
+                  return [
+                    deleteSongSuccess({ songId: action.songId }),
+                    ...companyActions,
+                  ];
+                }),
+                catchError((error) => of(deleteSongFailure({ error })))
+              );
+          })
+        )
+      )
+    )
+  );
+
+  deleteSongSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteSongSuccess),
+        map((action) => {
+          this.router.navigate(['/']);
+          return { type: '[Song] No Action' };
+        })
+      ),
+    { dispatch: false }
   );
 
   loadArtists$ = createEffect(() =>
@@ -111,6 +322,18 @@ export class SongEffects {
           );
         }
       })
+    )
+  );
+
+  saveCompany$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveCompany),
+      mergeMap((action) =>
+        this.companyService.updateCompany(action.company).pipe(
+          map((savedCompany) => saveCompanySuccess({ company: savedCompany })),
+          catchError((error) => of(saveCompanyFailure({ error })))
+        )
+      )
     )
   );
 }
