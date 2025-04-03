@@ -7,11 +7,12 @@ import { select, Store } from '@ngrx/store';
 import { setTitle } from '../../store/actions/title.actions';
 import { selectArtists, selectSongs } from '../../store/selectors/songs.selector';
 import { SongCardComponent } from '../../components/song-card/song-card.component';
+import { IconButtonComponent } from '../../components/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [TranslateModule, CommonModule, SongCardComponent],
+  imports: [TranslateModule, CommonModule, SongCardComponent, IconButtonComponent],
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.scss'],
 })
@@ -20,7 +21,6 @@ export class SongListComponent {
   artists$ = this.store.pipe(select(selectArtists));
 
   constructor(
-    private songService: SongService,
     private router: Router,
     private store: Store,
     private translate: TranslateService
@@ -32,5 +32,9 @@ export class SongListComponent {
     this.translate.get('SONGS').subscribe((translatedTitle: string) => {
       this.store.dispatch(setTitle({ title: translatedTitle }));
     });
+  }
+
+  newSong(){
+    this.router.navigate(['/songs/create']);
   }
 }

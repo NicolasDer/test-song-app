@@ -1,0 +1,182 @@
+<div class="form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="song-form">
+    <div class="input-row">
+      <label for="title">Title</label>
+      <div class="input-container">
+        <input
+          id="title"
+          formControlName="title"
+          type="text"
+          placeholder="Añade un título"
+          [class.invalid]="
+            form.get('title')?.invalid && form.get('title')?.touched
+          "
+        />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="artist">Artist</label>
+      <select
+        id="artist"
+        formControlName="artist"
+        [class.invalid]="
+          form.get('artist')?.invalid && form.get('artist')?.touched
+        "
+        [ngClass]="{ 'select-empty': artistSelect.value == '' }"
+        #artistSelect
+      >
+        <option value="" disabled selected>Selecciona un Artista</option>
+        <option
+          *ngFor="let artist of artists$ | async | keyvalue"
+          [value]="artist.value.id"
+        >
+          {{ artist.value.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="input-row">
+      <label for="genres">Géneros:</label>
+      <div class="input-container">
+        <input
+          id="genres"
+          (keyup.enter)="addGenre(inputGenre.value)"
+          placeholder="Añade un género"
+          #inputGenre
+        />
+        <button
+          class="add-genre-button"
+          type="button"
+          (click)="addGenre(inputGenre.value)"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="genres-container pills" *ngIf="genres.controls.length > 0">
+      <div *ngFor="let genre of genres.controls; let i = index" class="pill">
+        <span>{{ "# " + genre.value }}</span>
+        <button
+          type="button"
+          (click)="removeGenre(i)"
+          class="remove-pill-button"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="companies">Compañías:</label>
+      <select
+        id="companies"
+        (change)="addCompanyEvent($event)"
+        [disabled]="availableCompanies.length === 0"
+        [ngClass]="{ 'select-empty': companiesSelect.value == '' }"
+        #companiesSelect
+      >
+        <option value="" disabled selected>Selecciona una Discográfica</option>
+        <option
+          *ngFor="let company of companiesList"
+          [value]="company.id"
+          [disabled]="!availableCompanies.includes(company.id || '0')"
+        >
+          {{ company.name }}
+        </option>
+      </select>
+    </div>
+
+    <div
+      class="companies-container pills"
+      *ngIf="companies.controls.length > 0"
+    >
+      <div
+        *ngFor="let company of companies.controls; let i = index"
+        class="pill"
+      >
+        <span>{{ getCompanyNameById(company.value) }}</span>
+        <button
+          type="button"
+          (click)="removeCompany(i)"
+          class="remove-pill-button"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="country">Country</label>
+
+      <div class="input-container">
+        <input
+          id="country"
+          formControlName="country"
+          placeholder="Añade un país"
+          type="text"
+          [class.invalid]="
+            form.get('country')?.invalid && form.get('country')?.touched
+          "
+        />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="year">Release year</label>
+
+      <div class="input-container">
+        <input
+          id="year"
+          formControlName="year"
+          type="number"
+          min="1900"
+          max="2100"
+          step="1"
+          placeholder="Añade un año"
+          [class.invalid]="
+            form.get('year')?.invalid && form.get('year')?.touched
+          "
+        />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="duration">Duration</label>
+      <div class="input-container">
+        <input
+          id="duration"
+          formControlName="duration"
+          type="number"
+          placeholder="Añade la duración"
+          [class.invalid]="
+            form.get('duration')?.invalid && form.get('duration')?.touched
+          "
+        />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <label for="rating">Rating</label>
+      <div class="input-container">
+        <input
+          id="rating"
+          formControlName="rating"
+          type="number"
+          placeholder="Añade una puntuación"
+          [class.invalid]="
+            form.get('rating')?.invalid && form.get('rating')?.touched
+          "
+        />
+      </div>
+    </div>
+
+    <app-icon-button
+      class="save-button"
+      [type]="'submit'"
+      [iconClass]="'fa-solid fa-save'"
+    >
+    </app-icon-button>
+  </form>
+</div>

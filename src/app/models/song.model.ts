@@ -7,4 +7,5 @@ export interface Song {
   duration: number;
   rating: number;
   artist: string;
+  country: string;
 }

@@ -5,23 +5,28 @@
       <h2 [style.color]="'--text-color'">Géneros</h2>
       <div class="pills">
         <span *ngFor="let g of data.song?.genre"># {{ g }}</span>
+        <span *ngIf="!data.song?.genre || data.song?.genre?.length == 0" class="missing-pill">
+          {{ "GENRE.UNKNOWN" | translate }}
+        </span>
       </div>
     </div>
     <div class="pill-container">
       <h2 [style.color]="'--text-color'">Compañía Discográfica</h2>
-      <div class="pills" *ngFor="let company of data.companies">
-        <span
-          [style.background]="'--accent-color'"
-          [style.color]="'--bg-color'"
+      <div class="pills">
+        <span *ngFor="let company of data.companies"
           >{{ company?.name }}</span
         >
+        <span *ngIf="data.companies.length == 0" class="missing-pill">
+          {{ "COMPANY.UNKNOWN" | translate }}
+        </span>
       </div>
     </div>
     <div class="info-row">
       <h3 [style.color]="'--text-color'">País</h3>
       <input
         type="text"
-        [value]="data.artist?.bornCity"
+        [value]="data.song?.country || ''"
+        placeholder="País desconocido"
         class="underlined-input"
         readonly
       />
@@ -45,4 +50,15 @@
       />
     </div>
   </div>
+</div>
+<div class="sticky-bar" *ngIf="songDetails$ | async as data">
+  <app-icon-button 
+    iconClass="fa-solid fa-pen" 
+    (buttonClick)="editSong(data.song?.id)">
+  </app-icon-button>
+
+  <app-icon-button 
+    iconClass="fa-solid fa-trash" 
+    (buttonClick)="deleteSong(data.song?.id)">
+  </app-icon-button>
 </div>

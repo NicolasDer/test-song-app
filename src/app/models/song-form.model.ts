@@ -1,12 +1,6 @@
-export interface SongForm {
-    id?: string;
-    title: string;
-    poster: string;
-    genre: string[];
-    year: number;
-    duration: number;
-    rating: number;
-    artist: string;
+import { Song } from "./song.model";
+
+export interface SongForm extends Song{
     companies: string[];
   }
   
