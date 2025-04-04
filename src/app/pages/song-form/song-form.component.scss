@@ -166,6 +166,10 @@ input:not(:placeholder-shown) {
   z-index: 1000;
 }
 
+ngx-skeleton-loader {
+  width: 100%;
+}
+
 @media (min-width: 1024px) {
   .save-button {
     left: 50%;

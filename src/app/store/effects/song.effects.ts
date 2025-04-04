@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
+  delay,
   map,
   mergeMap,
   switchMap,
@@ -16,10 +17,7 @@ import {
   loadArtistsSuccess,
   loadCompanies,
   loadCompaniesSuccess,
-  setSongsLoaded,
-  setArtistsLoaded,
   loadArtistsFailure,
-  setCompaniesLoaded,
   loadCompaniesFailure,
   saveSong,
   saveSongSuccess,
@@ -52,6 +50,8 @@ import { CompanyService } from '../../services/company.service';
 import { Router } from '@angular/router';
 import { Company } from '../../models/company.model';
 import { Song } from '../../models/song.model';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class SongEffects {
@@ -61,8 +61,13 @@ export class SongEffects {
     private artistService: ArtistService,
     private companyService: CompanyService,
     private store: Store,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    const minDelay = 1500;
+    this.delay = (environment.apiDelay ? environment.apiDelay : 0) + minDelay;
+  }
+  delay: number;
 
   loadSongs$ = createEffect(() =>
     this.actions$.pipe(
@@ -76,8 +81,8 @@ export class SongEffects {
           return of();
         } else {
           return this.songService.getSongs().pipe(
+            delay(this.delay),
             map((songs) => {
-              this.store.dispatch(setSongsLoaded({ loaded: true }));
               return loadSongsSuccess({ songs });
             }),
             catchError((error) => {
@@ -93,11 +98,15 @@ export class SongEffects {
     this.actions$.pipe(
       ofType(createSong),
       mergeMap((action) =>
-        this.songService
-          .addSong(action.song)
-          .pipe(map((savedSong) => this.updateCompanies(savedSong, action)))
-      ),
-      mergeMap((actions) => actions)
+        this.songService.addSong(action.song).pipe(
+          delay(this.delay),
+          switchMap((savedSong) => this.updateCompanies(savedSong, action)),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+            return of(saveSongFailure({ error }));
+          })
+        )
+      )
     )
   );
 
@@ -121,10 +130,12 @@ export class SongEffects {
         const companyActions = updatedCompanies.map((company) =>
           saveCompany({ company })
         );
-
         return [createSongSuccess({ song: savedSong }), ...companyActions];
       }),
-      catchError((error) => of(createSongFailure({ error })))
+      catchError((error) => {
+        this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+        return of(createSongFailure({ error }));
+      })
     );
   }
 
@@ -134,6 +145,7 @@ export class SongEffects {
         ofType(createSongSuccess),
         map(() => {
           this.router.navigate(['/']);
+          this.toastr.success('¡Éxito!', 'Canción creada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -145,7 +157,8 @@ export class SongEffects {
       ofType(saveSong),
       mergeMap((action) =>
         this.songService.updateSong(action.song).pipe(
-          map((savedSong) => {
+          delay(this.delay),
+          switchMap((savedSong) => {
             const companies = action.song.companies;
 
             return this.store.select(selectCompaniesByIds(companies)).pipe(
@@ -190,15 +203,17 @@ export class SongEffects {
                         saveSongSuccess({ song: savedSong }),
                         ...companyActions,
                       ];
-                    }),
-                    catchError((error) => of(saveSongFailure({ error })))
+                    })
                   );
               })
             );
+          }),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo guardar la canción');
+            return of(saveSongFailure({ error }));
           })
         )
-      ),
-      mergeMap((actions) => actions)
+      )
     )
   );
 
@@ -223,6 +238,7 @@ export class SongEffects {
         ofType(saveSongSuccess),
         map((action) => {
           this.router.navigate(['/songs', action.song.id]);
+          this.toastr.success('¡Éxito!', 'Canción guardada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -234,6 +250,7 @@ export class SongEffects {
       ofType(deleteSong),
       mergeMap((action) =>
         this.songService.deleteSong(action.songId).pipe(
+          delay(this.delay),
           switchMap(() => {
             return this.store
               .select(selectCompaniesForSong(action.songId))
@@ -254,9 +271,12 @@ export class SongEffects {
                     deleteSongSuccess({ songId: action.songId }),
                     ...companyActions,
                   ];
-                }),
-                catchError((error) => of(deleteSongFailure({ error })))
+                })
               );
+          }),
+          catchError((error) => {
+            this.toastr.error('Hubo un error', 'No se pudo borrar la canción');
+            return of(deleteSongFailure({ error }));
           })
         )
       )
@@ -269,6 +289,7 @@ export class SongEffects {
         ofType(deleteSongSuccess),
         map((action) => {
           this.router.navigate(['/']);
+          this.toastr.success('¡Éxito!', 'Canción borrada correctamente');
           return { type: '[Song] No Action' };
         })
       ),
@@ -287,8 +308,8 @@ export class SongEffects {
           return of();
         } else {
           return this.artistService.getArtists().pipe(
+            delay(this.delay),
             map((artists) => {
-              this.store.dispatch(setArtistsLoaded({ loaded: true }));
               return loadArtistsSuccess({ artists });
             }),
             catchError((error) => {
@@ -312,8 +333,8 @@ export class SongEffects {
           return of();
         } else {
           return this.companyService.getCompanies().pipe(
+            delay(this.delay),
             map((companies) => {
-              this.store.dispatch(setCompaniesLoaded({ loaded: true }));
               return loadCompaniesSuccess({ companies });
             }),
             catchError((error) => {

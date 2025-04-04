@@ -10,6 +10,7 @@ import { Artist } from '../../models/artist.model';
 import {
   selectArtistById,
   selectCompaniesForSong,
+  selectLoadingState,
   selectSongById,
 } from '../../store/selectors/songs.selector';
 import { Company } from '../../models/company.model';
@@ -17,6 +18,7 @@ import { SongCardComponent } from '../../components/song-card/song-card.componen
 import { IconButtonComponent } from '../../components/icon-button/icon-button.component';
 import { deleteSong } from '../../store/actions/song.actions';
 import { TranslateModule } from '@ngx-translate/core';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-song-detail',
@@ -26,6 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
     SongCardComponent,
     IconButtonComponent,
     TranslateModule,
+    NgxSkeletonLoaderComponent
   ],
   templateUrl: './song-detail.component.html',
   styleUrls: ['./song-detail.component.scss'],
@@ -36,6 +39,7 @@ export class SongDetailComponent {
     artist: Artist | undefined;
     companies: Company[];
   }> | null = null;
+  loading$ = this.store.pipe(select(selectLoadingState));
 
   constructor(
     private route: ActivatedRoute,

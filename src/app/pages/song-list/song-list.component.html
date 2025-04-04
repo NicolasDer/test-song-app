@@ -1,11 +1,23 @@
 <section class="container">
-  <div class="song-list">
-    <app-song-card *ngFor="let song of songs$ | async | keyvalue" 
-    [song]="song.value"
-    [artist]="(artists$ | async)?.[song.value.artist]"></app-song-card>
+  <div class="song-list" *ngIf="!(loading$ | async)">
+      <app-song-card *ngFor="let song of songs$ | async | keyvalue" 
+      [song]="song.value"
+      [artist]="(artists$ | async)?.[song.value.artist]"></app-song-card>
+  </div>
+  <div class="skeleton-wrapper" *ngIf="loading$ | async">
+    <div class="skeleton-list">
+      <ngx-skeleton-loader
+      [count]="5"
+      [theme]="{ 
+        'border-radius': '5px',
+        height: '350px',
+        'width':'100%'
+      }"
+    />
+    </div>
   </div>
 </section>
-<div class="sticky-bar">
+<div class="sticky-bar" *ngIf="!(loading$ | async)">
   <app-icon-button 
     iconClass="fa-solid fa-plus" 
     (buttonClick)="newSong()">

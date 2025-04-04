@@ -3,7 +3,16 @@
     <div class="input-row">
       <label for="title">Title</label>
       <div class="input-container">
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
         <input
+          *ngIf="!(loading$ | async)"
           id="title"
           formControlName="title"
           type="text"
@@ -17,7 +26,16 @@
 
     <div class="input-row">
       <label for="artist">Artist</label>
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        [theme]="{
+          height: '2rem',
+          'margin-bottom': '0',
+          'margin-top': '10px'
+        }"
+      ></ngx-skeleton-loader>
       <select
+        *ngIf="!(loading$ | async)"
         id="artist"
         formControlName="artist"
         [class.invalid]="
@@ -39,23 +57,36 @@
     <div class="input-row">
       <label for="genres">Géneros:</label>
       <div class="input-container">
-        <input
-          id="genres"
-          (keyup.enter)="addGenre(inputGenre.value)"
-          placeholder="Añade un género"
-          #inputGenre
-        />
-        <button
-          class="add-genre-button"
-          type="button"
-          (click)="addGenre(inputGenre.value)"
-        >
-          <i class="fa-solid fa-plus"></i>
-        </button>
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
+        <ng-container *ngIf="!(loading$ | async)">
+          <input
+            id="genres"
+            (keyup.enter)="addGenre(inputGenre.value)"
+            placeholder="Añade un género"
+            #inputGenre
+          />
+          <button
+            class="add-genre-button"
+            type="button"
+            (click)="addGenre(inputGenre.value)"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </ng-container>
       </div>
     </div>
 
-    <div class="genres-container pills" *ngIf="genres.controls.length > 0">
+    <div
+      class="genres-container pills"
+      *ngIf="genres.controls.length > 0 && !(loading$ | async)"
+    >
       <div *ngFor="let genre of genres.controls; let i = index" class="pill">
         <span>{{ "# " + genre.value }}</span>
         <button
@@ -70,7 +101,16 @@
 
     <div class="input-row">
       <label for="companies">Compañías:</label>
+      <ngx-skeleton-loader
+        *ngIf="loading$ | async"
+        [theme]="{
+          height: '2rem',
+          'margin-bottom': '0',
+          'margin-top': '10px'
+        }"
+      ></ngx-skeleton-loader>
       <select
+        *ngIf="!(loading$ | async)"
         id="companies"
         (change)="addCompanyEvent($event)"
         [disabled]="availableCompanies.length === 0"
@@ -90,7 +130,7 @@
 
     <div
       class="companies-container pills"
-      *ngIf="companies.controls.length > 0"
+      *ngIf="companies.controls.length > 0 && !(loading$ | async)"
     >
       <div
         *ngFor="let company of companies.controls; let i = index"
@@ -111,7 +151,16 @@
       <label for="country">Country</label>
 
       <div class="input-container">
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
         <input
+          *ngIf="!(loading$ | async)"
           id="country"
           formControlName="country"
           placeholder="Añade un país"
@@ -127,7 +176,16 @@
       <label for="year">Release year</label>
 
       <div class="input-container">
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
         <input
+          *ngIf="!(loading$ | async)"
           id="year"
           formControlName="year"
           type="number"
@@ -145,7 +203,16 @@
     <div class="input-row">
       <label for="duration">Duration</label>
       <div class="input-container">
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
         <input
+          *ngIf="!(loading$ | async)"
           id="duration"
           formControlName="duration"
           type="number"
@@ -160,7 +227,16 @@
     <div class="input-row">
       <label for="rating">Rating</label>
       <div class="input-container">
+        <ngx-skeleton-loader
+          *ngIf="loading$ | async"
+          [theme]="{
+            height: '2rem',
+            'margin-bottom': '0',
+            'margin-top': '10px'
+          }"
+        ></ngx-skeleton-loader>
         <input
+          *ngIf="!(loading$ | async)"
           id="rating"
           formControlName="rating"
           type="number"
@@ -173,6 +249,7 @@
     </div>
 
     <app-icon-button
+      *ngIf="!(loading$ | async)"
       class="save-button"
       [type]="'submit'"
       [iconClass]="'fa-solid fa-save'"

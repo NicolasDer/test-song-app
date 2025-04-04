@@ -2,21 +2,26 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { loadArtists, loadCompanies, loadSongs } from './store/actions/song.actions';
+import {
+  loadArtists,
+  loadCompanies,
+  loadSongs,
+} from './store/actions/song.actions';
+import { LoadingAnimationComponent } from './components/loading-animation/loading-animation.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule],
+  imports: [RouterModule, LoadingAnimationComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private translate: TranslateService,private store: Store) {
+  constructor(private translate: TranslateService, private store: Store) {
     this.translate.setDefaultLang('es');
     this.translate.use('es');
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.store.dispatch(loadSongs());
     this.store.dispatch(loadArtists());
     this.store.dispatch(loadCompanies());

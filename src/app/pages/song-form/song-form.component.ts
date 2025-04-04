@@ -19,21 +19,28 @@ import {
   selectArtists,
   selectCompanies,
   selectCompaniesForSong,
+  selectLoadingState,
   selectSongById,
 } from '../../store/selectors/songs.selector';
 import { CommonModule } from '@angular/common';
 import { createSong, saveSong } from '../../store/actions/song.actions';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Artist } from '../../models/artist.model';
 import { Company } from '../../models/company.model';
 import { setTitle } from '../../store/actions/title.actions';
 import { TranslateService } from '@ngx-translate/core';
 import { IconButtonComponent } from '../../components/icon-button/icon-button.component';
 import { SongForm } from '../../models/song-form.model';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-song-form',
-  imports: [ReactiveFormsModule, CommonModule, IconButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    IconButtonComponent,
+    NgxSkeletonLoaderComponent,
+  ],
   templateUrl: './song-form.component.html',
   styleUrl: './song-form.component.scss',
 })
@@ -49,6 +56,8 @@ export class SongFormComponent {
   companies$: Observable<{ [id: string]: Company }> =
     this.store.select(selectCompanies);
 
+    loading$ = this.store.pipe(select(selectLoadingState));
+
   @ViewChild('inputGenre') inputGenre!: ElementRef;
   @ViewChild('companiesSelect') companiesSelect!: ElementRef;
   companiesList: Company[] = [];
@@ -61,7 +70,7 @@ export class SongFormComponent {
     'http://dummyimage.com/600x400.png/5fa2dd/ffffff',
     'http://dummyimage.com/600x400.png/ff4444/ffffff',
   ];
-  poster : string ='';
+  poster: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -195,13 +204,11 @@ export class SongFormComponent {
       const song: SongForm = this.form.value;
       song.poster = this.poster;
       if (this.isEditMode) {
-        console.log(song)
         this.store.dispatch(saveSong({ song }));
       } else {
         this.store.dispatch(createSong({ song }));
       }
     } else {
-      console.log(this.form.get('rating')?.invalid);
       Object.keys(this.form.controls).forEach((field) => {
         const control = this.form.get(field);
         control?.markAsTouched();
