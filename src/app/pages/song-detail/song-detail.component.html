@@ -112,6 +112,7 @@
 </div>
 <div class="sticky-bar" *ngIf="songDetails$ | async as data">
   <app-icon-button
+  id="edit-song"
     *ngIf="!(loading$ | async)"
     iconClass="fa-solid fa-pen"
     (buttonClick)="editSong(data.song?.id)"

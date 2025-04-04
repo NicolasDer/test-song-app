@@ -97,7 +97,13 @@
             ],
             "scripts": []
           }
+        },
+        "e2e": {
+        "builder": "@cypress/schematic:cypress",
+        "options": {
+          "devServerTarget": "song-app:build"
         }
+      }
       }
     }
   }
