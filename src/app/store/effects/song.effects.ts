@@ -102,7 +102,7 @@ export class SongEffects {
           delay(this.delay),
           switchMap((savedSong) => this.updateCompanies(savedSong, action)),
           catchError((error) => {
-            this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+            this.toastr.error('Hubo un error COMPROBAR README.md', 'No se pudo crear la canción');
             return of(saveSongFailure({ error }));
           })
         )
@@ -133,7 +133,7 @@ export class SongEffects {
         return [createSongSuccess({ song: savedSong }), ...companyActions];
       }),
       catchError((error) => {
-        this.toastr.error('Hubo un error', 'No se pudo crear la canción');
+        this.toastr.error('Hubo un error COMPROBAR README.md', 'No se pudo crear la canción');
         return of(createSongFailure({ error }));
       })
     );
@@ -209,7 +209,7 @@ export class SongEffects {
             );
           }),
           catchError((error) => {
-            this.toastr.error('Hubo un error', 'No se pudo guardar la canción');
+            this.toastr.error('Hubo un error COMPROBAR README.md', 'No se pudo guardar la canción');
             return of(saveSongFailure({ error }));
           })
         )
@@ -275,7 +275,7 @@ export class SongEffects {
               );
           }),
           catchError((error) => {
-            this.toastr.error('Hubo un error', 'No se pudo borrar la canción');
+            this.toastr.error('Hubo un error COMPROBAR README.md', 'No se pudo borrar la canción');
             return of(deleteSongFailure({ error }));
           })
         )

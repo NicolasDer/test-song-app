@@ -1,59 +1,75 @@
 # SongApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+## Introducción
 
-## Development server
+Este proyecto es una prueba de implementación creada con el objetivo de explorar, evaluar y validar ciertos aspectos clave en la construcción de aplicaciones web con Angular y git, su integración con herramientas externas como Cypress para pruebas e2e, y la implementación de pruebas unitarias usando Karma/Jasmine.
 
-To start a local development server, run:
+## Herramientas empleadas
 
-```bash
-ng serve
+ - Angular
+ - NgRx
+ - ngx-skeleton-loader
+ - ngx-toastr
+ - Karma +  Jasmine
+ - Cypress
+
+## Metodología empleada
+
+Antes de iniciar el proyecto he creado una lista de tareas con sus descipciones siguiendo el estilo de Jira, siendo SNG la etiqueta del proyecto.
+
+Las ramas tienen el nombre completo de la tarea en cuestión y cada commit tiene el identificador de la tarea únicamente. Esto ayuda a ver los commits en la plataforma de Atlassian.
+
+Los pull requests se han cerrado con merge y las ramas se han dejado abiertas para que sea posible identificarlas analizando el repositorio.
+
+## Instalacion del proyecto
+
+Se ha utilizado yarn  como gestor de paquetes por lo que se recomienda lanzar todos los comandos con yarn.
+
+Para instalar yarn y instalar las dependencias:
+
+```
+npm install -g yarn
+yarn
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Configuraciones del proyecto
 
-## Code scaffolding
+En el fichero `environments.ts` se encuentran dos configuraciones para testear los skeleton loaders y errores en el guardado.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+apiErrors
+apiDelay
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Iniciar un servidor de desarrollo
 
-```bash
-ng generate --help
+```
+yarn dev
 ```
 
-## Building
+## Lanzar tests unitarios
 
-To build the project run:
+Solamente se han definido tests en el componente de `icon-button`, pero hay tests generados automaticamente por angular que pueden no funcionar.
 
-```bash
-ng build
+```
+yarn test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Lanzar tests e2e
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```
+yarn test:e2e
 ```
 
-## Running end-to-end tests
+## Posibles mejoras y correcciones
 
-For end-to-end (e2e) testing, run:
+Mejoras
 
-```bash
-ng e2e
-```
+ - Refactorizar el store, dividirlo en un store por entidad, mejorar legibilidad de codigo
+ - Mejorar la interfaz de lista de canciones
+ - Añadir tests para el resto de la aplicación
+ - Cambiar json-server por un backend de verdad y delegar la gesttion de entidades (actualmente esta gestion se hace en el store)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Correcciones
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+ - Terminar de traducir todos los componentes de la aplicación
