@@ -1,0 +1,37 @@
+<div class="layout">
+  <nav [class.open]="isOpen()" class="sidebar">
+    <div class="menu-header">
+      <h2 *ngIf="isOpen()">{{ title$ | async }}</h2>
+      <button *ngIf="!isOpen()" class="hamburger-button" (click)="toggleMenu()">
+        <span>☰</span>
+      </button>
+      <button *ngIf="isOpen()" class="close-button" (click)="toggleMenu()">
+        ✖
+      </button>
+    </div>
+    <ul>
+      <li
+        *ngFor="let item of menuItems"
+        routerLink="{{ item.path }}"
+        routerLinkActive="active"
+      >
+        <i *ngIf="!isOpen()" class="fa-solid" [ngClass]="item.icon"></i>
+        <span class="menu-label" *ngIf="isOpen()">{{
+          item.label | translate
+        }}</span>
+      </li>
+    </ul>
+  </nav>
+  <div class="content-wrapper">
+    <header class="header">
+      <button class="menu-button" (click)="toggleMenu()">
+        <span>☰</span>
+      </button>
+      <h1 class="page-title">{{ title$ | async }}</h1>
+    </header>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="overlay" *ngIf="isOpen()" (click)="toggleMenu()"></div>
+</div>
